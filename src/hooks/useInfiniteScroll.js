@@ -4,6 +4,7 @@ const useInfiniteScroll = callback => {
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
+    
     function handleScroll() {
       if (
         window.innerHeight + document.documentElement.scrollTop ===
