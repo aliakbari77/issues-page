@@ -4,21 +4,26 @@ import axios from 'axios'
 import React, {useState, useEffect} from 'react'
 import IssueItem from './IssueItem';
 
-function IssueList() {
+function IssueList(props) {
   const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
   const [items, setItems] = useState([])
   const [page, setPage] = useState(1)
+  const [issuesFilter , setIssuesFilter] = useState(0)
 
+  console.log(props.issuesFilter)
   useEffect( async () => {
+    setIssuesFilter(props.issuesFilter)
     console.log("use effect started.", page)
-    console.log(isFetching)
-    const {data: newItems} = await axios.get(`http://localhost:9000/issues?page=${page}&issuesFilter=0`)
+    console.log(isFetching, issuesFilter)
+    const {data: newItems} = await axios.get(`http://localhost:9000/issues?page=${page}&issuesFilter=${issuesFilter}`)
     console.log(newItems)
-    setPage(page + 1)
     setItems(items => items.concat(newItems))
+    setIsFetching(false)
+    setIssuesFilter(props.issuesFilter)
+    console.log("%%%%", issuesFilter)
+    setPage(page + 1)
+    // setIsFetching(false)   
     
-    setIsFetching(false)   
-    if (newItems == [] ) return
     // let page = 1
     // setIsFetching(isFetching)
     // console.log(isFetching)
@@ -35,7 +40,7 @@ function IssueList() {
     // }
     // page = page + 1
     // console.log(items);
-  }, [isFetching])
+  }, [isFetching, issuesFilter])
 
   function fetchMoreListItems(){
     return page

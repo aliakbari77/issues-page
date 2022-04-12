@@ -6,6 +6,11 @@ const useInfiniteScroll = callback => {
   useEffect(() => {
     
     function handleScroll() {
+      
+      if (callback() >= 4 ){
+        setIsFetching(false)
+        return
+      }
       if (
         window.innerHeight + document.documentElement.scrollTop ===
           document.documentElement.offsetHeight &&
